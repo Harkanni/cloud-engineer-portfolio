@@ -243,19 +243,22 @@ This project intentionally follows modern AWS security recommendations.
 
 ## AWS Console
 
-> *Screenshot coming soon.*
+> <img src="./assets/aws_cli.png" alt="Terraform AWS Static Website Banner" width="100%">
+<p align="center">
+  
+</p>
 
 ---
 
 ## Terraform Apply
 
-> *Screenshot coming soon.*
+> <img src="./assets/terraform_apply.png" alt="Terraform AWS Static Website Banner" width="100%">
 
 ---
 
 ## Deployed Website
 
-> *Screenshot coming soon.*
+> <img src="./assets/banner.png" alt="Terraform AWS Static Website Banner" width="100%">
 
 ---
 
