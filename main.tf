@@ -3,7 +3,7 @@ data "aws_region" "current" {}
 
 resource "aws_s3_bucket" "cloud_dev_bucket" {
   region = "us-east-1"
-  bucket = "cloud-engineer-portfolio-bucket"
+  bucket = "cloud-engineer-portfolio-bucket-v2"
 
   tags = {
     "Name" = "Cloud Engineer Portfolio"
@@ -26,35 +26,8 @@ resource "aws_s3_bucket_public_access_block" "cloud_dev_bucket" {
   block_public_acls       = true
   ignore_public_acls      = true
 
-  block_public_policy     = false
-  restrict_public_buckets = false
-}
-
-data "aws_iam_policy_document" "public_read" {
-  statement {
-    sid = "PublicReadGetObject"
-    effect = "Allow"
-
-    principals {
-      type        = "*"
-      identifiers = ["*"]
-    }
-
-    actions = [
-      "s3:GetObject"
-    ]
-
-    resources = [
-      "${aws_s3_bucket.cloud_dev_bucket.arn}/*"
-    ]
-  }
-}
-
-resource "aws_s3_bucket_policy" "public_read" {
-  bucket = aws_s3_bucket.cloud_dev_bucket.id
-  policy = data.aws_iam_policy_document.public_read.json
-
-  depends_on = [ aws_s3_bucket_public_access_block.cloud_dev_bucket ]
+  block_public_policy     = true
+  restrict_public_buckets = true
 }
 
 
@@ -64,20 +37,16 @@ resource "aws_s3_object" "index_html" {
   source = "www/index.html"
   content_type = "text/html"
 
-  # The filemd5() function is available in Terraform 0.11.12 and later
-  # For Terraform 0.11.11 and earlier, use the md5() function and the file() function:
-  # etag = "${md5(file("path/to/file"))}"
   etag = filemd5("www/index.html")
 }
 
-resource "aws_s3_bucket_website_configuration" "cloud_dev_bucket" {
+resource "aws_s3_object" "favicons" {
+  for_each = toset(local.favicon_files)
+
   bucket = aws_s3_bucket.cloud_dev_bucket.id
+  key = "favicon/${each.value}"
+  source = "www/favicon/${each.value}"
 
-  index_document {
-    suffix = "index.html"
-  }
-
-  error_document {
-    key = "error.html"
-  }
+  content_type = "image/x-icon"
+  etag = filemd5("www/favicon/${each.value}")
 }
