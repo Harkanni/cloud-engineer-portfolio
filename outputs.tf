@@ -17,3 +17,9 @@ output "bucket_id" {
   description = "Unique identifier of the S3 bucket"
   value       = aws_s3_bucket.cloud_dev_bucket.id
 }
+
+# 6. Outputs (Prints your public URL directly into your terminal)
+output "cloudfront_url" {
+  value       = "https://${aws_cloudfront_distribution.s3_distribution.domain_name}"
+  description = "The public URL of your CloudFront distribution Website"
+}
