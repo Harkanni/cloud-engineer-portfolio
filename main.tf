@@ -37,13 +37,13 @@ resource "aws_s3_bucket" "cloud_dev_bucket" {
   }
 }
 
-resource "aws_s3_bucket_ownership_controls" "cloud_dev_bucket" {
-  bucket = aws_s3_bucket.cloud_dev_bucket.id
+# resource "aws_s3_bucket_ownership_controls" "cloud_dev_bucket" {
+#   bucket = aws_s3_bucket.cloud_dev_bucket.id
 
-  rule {
-    object_ownership = "BucketOwnerEnforced"
-  }
-}
+#   rule {
+#     object_ownership = "BucketOwnerEnforced"
+#   }
+# }
 
 resource "aws_s3_bucket_public_access_block" "cloud_dev_bucket" {
   bucket = aws_s3_bucket.cloud_dev_bucket.id
